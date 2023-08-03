@@ -1,0 +1,51 @@
+module Ex3_to_BCD(A , B);
+
+	input [3 : 0] A;
+	output [3 : 0] B;
+	wire and_A3_A1_A0;
+	wire and_A3_A2;
+	wire and_A2_A1_A0;
+	wire [3 : 0] comA;
+	not ( comA[3] , A[3]);
+	not ( comA[2] , A[2]);
+	not ( comA[1] , A[1]);
+	not ( comA[0] , A[0]);
+	wire and_comA2_comA0;
+	wire and_comA2_comA1;
+
+	// D
+	not(B[0] , A[0]);
+	//C
+	xor(B[1] , A[1] , A[0]);
+	//B
+	and(and_comA2_comA0 , comA[2] , comA[0]);
+	and(and_comA2_comA1 , comA[2] , comA[1]);
+	and(and_A2_A1_A0 , A[2] , A[1] , A[0]);
+	or(B[2] , and_comA2_comA0 , and_comA2_comA1 , and_A2_A1_A0);
+	//A
+	and( and_A3_A1_A0 , A[3] , A[1] , A[0]);
+	and( and_A3_A2 , A[3] , A[2]);
+	or( B[3] , and_A3_A1_A0 , and_A3_A2);
+
+endmodule
+
+module Ex3_to_BCD_Test;
+	reg [3 : 0] a;
+	wire [3 : 0] b;
+	Ex3_to_BCD BCD(.A(a) , .B(b));
+	initial begin
+		#0; a = 4'b0011;
+		#50; a = 4'b0100;
+		#50; a = 4'b0101;
+		#50; a = 4'b0110;
+		#50; a = 4'b0111;
+		#50; a = 4'b1000;
+		#50; a = 4'b1001;
+		#50; a = 4'b1010;
+		#50; a = 4'b1011;
+		#50; a = 4'b1100;
+		#100;
+	end
+endmodule
+
+	

@@ -1,0 +1,40 @@
+module four_bit_AddSub (A, B, Cin , S, Cout);
+	input [3 : 0] A , B;
+	input Cin;
+	output [3 : 0] S;
+	output Cout;
+// if Cin = 1 then Subtractor else Adder
+	wire [3:0] B0;
+	xor(B0[3] , B[3] , Cin);
+	xor(B0[2] , B[2] , Cin);
+	xor(B0[1] , B[1] , Cin);
+	xor(B0[0] , B[0] , Cin);
+	
+	wire [2:0] C;
+	fullAdder fa1( A[0] , B0[0] , Cin , S[0] , C[0]);
+	fullAdder fa2( A[1] , B0[1] , C[0] , S[1] , C[1]);
+	fullAdder fa3( A[2] , B0[2] , C[1] , S[2] , C[2]);
+	fullAdder fa4( A[3] , B0[3] , C[2] , S[3] , Cout);
+endmodule 
+
+module four_bit_AddSub_Test;
+	reg [3:0] a, b;
+    	reg cin;
+    	wire [3:0] s;
+    	wire cout;
+
+    four_bit_AddSub four_a_s(.A(a), .B(b), .Cin(cin), .S(s), .Cout(cout));
+    
+    initial begin
+        #0  a = 4'b11;   b = 4'b1;    cin = 0; // 4
+        #50 a = 4'b100;  b = 4'b10;   cin = 0; // 6
+        #50 a = 4'b101;  b = 4'b110;  cin = 0; // 11
+        #50 a = 4'b110;  b = 4'b111;  cin = 0; // 13
+        #50 a = 4'b111;  b = 4'b1000; cin = 0; // 15
+        #50 a = 4'b1001; b = 4'b1000; cin = 1; // 1
+        #50 a = 4'b1001; b = 4'b11;   cin = 1; // 6
+        #50 a = 4'b1100; b = 4'b1000; cin = 1; // 4
+        #50 a = 4'b1100; b = 4'b11;   cin = 1; // 9
+        //$finish;
+    end
+endmodule

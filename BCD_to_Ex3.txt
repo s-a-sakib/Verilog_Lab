@@ -1,0 +1,34 @@
+module BCD_To_Ex3(b , e);
+	input [3:0]b;
+	output [3:0]e;
+	wire or_b0_b1;
+	wire andb2_orb0_b1;
+
+	or(or_b0_b1,b[0],b[1]);
+	and(andb2_orb0_b1,b[2],or_b0_b1);
+	or(e[3],b[3],andb2_orb0_b1);
+	xor(e[2],b[2],or_b0_b1);
+	xnor(e[1],b[1],b[0]);
+	not(e[0],b[0]);
+endmodule
+
+module BCD_To_Ex3_Test;
+    reg [3:0] A;
+    wire [3:0] B;
+    
+    BCD_To_Ex3 bcd(.b(A), .e(B));
+    
+    initial begin
+        #0; A = 4'b0000;
+        #50; A = 4'b0001;
+        #50; A = 4'b0010;
+        #50; A = 4'b0011;
+        #50; A = 4'b0100;
+        #50; A = 4'b0101;
+        #50; A = 4'b0110;
+        #50; A = 4'b0111;
+        #50; A = 4'b1000;
+        #50; A = 4'b1001;
+        #100;
+    end
+endmodule

@@ -1,0 +1,43 @@
+module fullAdder(input A , B , Cin , output S , Cout);
+	wire S0 , C0 , c1;
+	halfAdder hf1( A , B , S0 , C0);
+	halfAdder hf2( S0 , Cin , S , C1);
+	or(Cout , C0 , C1);
+endmodule
+
+module fullAdderTest;
+  reg a, b, cin;
+  wire s, cout;
+  fullAdder fa(.A(a), .B(b), .Cin(cin), .S(s), .Cout(cout));
+  
+  initial begin
+    
+    #0 a = 1'b0; b = 1'b0; cin = 1'b0;
+    #50;
+    
+    a = 1'b0; b = 1'b0; cin = 1'b1;
+    #50;
+    
+    a = 1'b0; b = 1'b1; cin = 1'b0;
+    #50;
+    
+    a = 1'b0; b = 1'b1; cin = 1'b1;
+    #50;
+    
+    a = 1'b1; b = 1'b0; cin = 1'b0;
+    #50;
+    
+    a = 1'b1; b = 1'b0; cin = 1'b1;
+    #50;
+    
+    a = 1'b1; b = 1'b1; cin = 1'b0;
+    #50;
+    
+    a = 1'b1; b = 1'b1; cin = 1'b1;
+    #50;    
+  end
+endmodule
+
+
+
+
